@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <matazure/config.hpp>
 
@@ -30,10 +30,10 @@ template <typename _T>
 struct one;
 
 /// special for most type, value() return 0 directly;
-template <typename _T>
+template <typename _Type>
 struct zero {
-	MATAZURE_GENERAL static constexpr _T value() {
-		return _T(0);
+	MATAZURE_GENERAL static constexpr _Type value() {
+		return _Type(0);
 	};
 };
 

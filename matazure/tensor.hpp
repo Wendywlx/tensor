@@ -441,6 +441,10 @@ public:
 		return elements_;
 	}
 
+	MATAZURE_GENERAL  constexpr int_t element_size() const {
+		return sizeof(value_type);
+	}
+
 public:
 	value_type			elements_[traits_t::size()];
 };
@@ -657,6 +661,8 @@ public:
 	/// return the pointer of tensor elements
 	value_type * data() const { return sp_data_.get(); }
 
+	constexpr int_t element_size() const { return sizeof(value_type); };
+
 private:
 	shared_ptr<value_type> malloc_shared_memory(int_t size) {
 		size = size > 0 ? size : 1;
@@ -690,9 +696,11 @@ using row_major_layout = last_major_layout<2>;
 template <typename _ValueType, typename _Layout = column_major_layout>
 using matrix = tensor<_ValueType, 2, _Layout>;
 
-///// alias of tensor <_ValueType, 1>
-//template <typename _ValueType, typename _Layout = first_major_layout<1>>
-//using vector = tensor<_ValueType, 1, _Layout>;
+#ifndef MATAZURE_DISABLE_VECTOR_ALIAS
+/// alias of tensor <_ValueType, 1>
+template <typename _ValueType, typename _Layout = first_major_layout<1>>
+using vector = tensor<_ValueType, 1, _Layout>;
+#endif
 
 /// alias of tensor<static_tensor<_ValueType, _BlockDim>, _BlockDim::size(), _Layout>
 template <typename _ValueType, typename _BlockDim, typename _Layout = first_major_layout<_BlockDim::size()>>
@@ -774,6 +782,15 @@ public:
 		layout_(ext),
 		fun_(fun)
 	{}
+
+	/**
+	* @brief copy constructor
+	*/
+	lambda_tensor(const lambda_tensor &rhs) :
+		extent_(rhs.extent_),
+		layout_(rhs.layout_),
+		fun_(rhs.fun_)
+	{ }
 
 	/**
 	* @brief accesses element by linear access mode
@@ -912,11 +929,6 @@ inline auto reshape(tensor<_ValueType, _Rank, _Layout> ts, pointi<_OutDim> ext, 
 	return re;
 }
 
-#ifdef MATAZURE_CUDA
-
-///@todo nvcc bug, should forward declaration
-namespace __walkaround {
-
 using tensor1b = tensor<byte, 1>;
 using tensor2b = tensor<byte, 2>;
 using tensor3b = tensor<byte, 3>;
@@ -961,9 +973,5 @@ using tensor1d = tensor<double, 1>;
 using tensor2d = tensor<double, 2>;
 using tensor3d = tensor<double, 3>;
 using tensor4d = tensor<double, 4>;
-
-}
-
-#endif
 
 }

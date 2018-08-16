@@ -4,6 +4,8 @@
 #include <matazure/unary.hpp>
 #include <matazure/binary_operator.hpp>
 #include <matazure/meta.hpp>
+#include <matazure/dynamic_tensor.hpp>
+#include <matazure/iterator.hpp>
 
 #include <matazure/puzzle/prod.hpp>
 #include <matazure/puzzle/conv.hpp>
