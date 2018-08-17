@@ -223,7 +223,7 @@ public:
 	}
 
 	MATAZURE_GENERAL typename _Tensor::value_type operator()(const pointi<_Tensor::rank> &idx) const{
-		auto idx_f = point_cast<float>[idx] * resize_scale_;
+		auto idx_f = point_cast<float>(idx) * resize_scale_;
 		return ts_[point_cast<int_t>(idx_f)];
 	}
 };

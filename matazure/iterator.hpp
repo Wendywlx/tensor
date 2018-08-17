@@ -28,6 +28,17 @@ namespace matazure {
 			return retval;
 		}
 
+		index_iterator& operator--() {
+			--pos_;
+			return *this;
+		}
+
+		index_iterator operator--(int) {
+			auto retval = *this;
+			--(*this);
+			return retval;
+		}
+
 		///note for performance
 		bool operator==(index_iterator other) const { return pos_ == other.pos_; }
 		bool operator!=(index_iterator other) const { return pos_ != other.pos_; }

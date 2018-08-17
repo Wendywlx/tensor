@@ -692,16 +692,6 @@ public:
 using column_major_layout = first_major_layout<2>;
 using row_major_layout = last_major_layout<2>;
 
-/// alias of tensor<_ValueType, 2>
-template <typename _ValueType, typename _Layout = column_major_layout>
-using matrix = tensor<_ValueType, 2, _Layout>;
-
-#ifndef MATAZURE_DISABLE_VECTOR_ALIAS
-/// alias of tensor <_ValueType, 1>
-template <typename _ValueType, typename _Layout = first_major_layout<1>>
-using vector = tensor<_ValueType, 1, _Layout>;
-#endif
-
 /// alias of tensor<static_tensor<_ValueType, _BlockDim>, _BlockDim::size(), _Layout>
 template <typename _ValueType, typename _BlockDim, typename _Layout = first_major_layout<_BlockDim::size()>>
 using block_tensor = tensor<static_tensor<_ValueType, _BlockDim>, _BlockDim::size(), _Layout>;
@@ -929,6 +919,22 @@ inline auto reshape(tensor<_ValueType, _Rank, _Layout> ts, pointi<_OutDim> ext, 
 	return re;
 }
 
+/// alias of tensor<_ValueType, 2>
+template <typename _ValueType, typename _Layout = column_major_layout>
+using matrix = tensor<_ValueType, 2, _Layout>;
+
+#ifndef MATAZURE_DISABLE_VECTOR_ALIAS
+/// alias of tensor <_ValueType, 1>
+template <typename _ValueType, typename _Layout = first_major_layout<1>>
+using vector = tensor<_ValueType, 1, _Layout>;
+#endif
+
+template <int_t _Rank, typename _Layout = column_major_layout> using tensorb = tensor<byte, _Rank, column_major_layout>;
+template <int_t _Rank, typename _Layout = column_major_layout> using tensors = tensor<short, _Rank, column_major_layout>;
+template <int_t _Rank, typename _Layout = column_major_layout> using tensori = tensor<int_t, _Rank, column_major_layout>;
+template <int_t _Rank, typename _Layout = column_major_layout> using tensorf = tensor<float, _Rank, column_major_layout>;
+template <int_t _Rank, typename _Layout = column_major_layout> using tensord = tensor<double, _Rank, column_major_layout>;
+
 using tensor1b = tensor<byte, 1>;
 using tensor2b = tensor<byte, 2>;
 using tensor3b = tensor<byte, 3>;
@@ -944,10 +950,10 @@ using tensor2us = tensor<unsigned short, 2>;
 using tensor3us = tensor<unsigned short, 4>;
 using tensor4us = tensor<unsigned short, 4>;
 
-using tensor1i = tensor<int, 1>;
-using tensor2i = tensor<int, 2>;
-using tensor3i = tensor<int, 3>;
-using tensor4i = tensor<int, 4>;
+using tensor1i = tensor<int_t, 1>;
+using tensor2i = tensor<int_t, 2>;
+using tensor3i = tensor<int_t, 3>;
+using tensor4i = tensor<int_t, 4>;
 
 using tensor1ui = tensor<unsigned int, 1>;
 using tensor2ui = tensor<unsigned int, 2>;

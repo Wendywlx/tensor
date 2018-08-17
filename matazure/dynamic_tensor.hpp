@@ -94,12 +94,16 @@ namespace matazure {
 			return size_;
 		}
 
-		shared_ptr<byte> shared_data() {
-			return sp_mem_;
+		template <typename _Type = byte>
+		shared_ptr<_Type> shared_data() {
+			shared_ptr<_Type> sp_tmp(data<_Type>(), [sp_mem = sp_mem_](auto p) {});
+			return sp_tmp;
 		}
 
-		shared_ptr<const byte> shared_data() const {
-			return sp_mem_;
+		template <typename _Type = byte>
+		shared_ptr<const _Type> shared_data() const {
+			shared_ptr<const _Type> sp_tmp(data<_Type>(), [sp_mem = sp_mem_](auto p) {});
+			return sp_tmp;
 		}
 
 		template <typename _Type = byte>
@@ -128,7 +132,8 @@ namespace matazure {
 		auto rank = _Tensor::rank;
 		dynamic_tensor::shape_type shape(rank);
 		copy(ts.shape(), shape);
-		return dynamic_tensor(get_data_type_traits<typename _Tensor::value_type>::value, shape, ts.shared_data());
+		shared_ptr<byte> sp_tmp(reinterpret_cast<byte*>(ts.data()), [ts](auto p) {});
+		return dynamic_tensor(get_data_type_traits<typename _Tensor::value_type>::value, shape, sp_tmp);
 	}
 
 }
