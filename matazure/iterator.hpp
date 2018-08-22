@@ -97,13 +97,13 @@ namespace std {
 	}
 
 	template <typename _Tensor>
-	auto rbegin(_Tensor ts)->reverse_iterator<decltype(begin(ts))> {
-		return reverse_iterator<decltype(begin(ts))>(begin(ts));
+	auto rbegin(_Tensor ts)->reverse_iterator<decltype(end(ts))> {
+		return reverse_iterator<decltype(begin(ts))>(end(ts));
 	}
 
 	template <typename _Tensor>
-	auto rend(_Tensor ts)->reverse_iterator<decltype(end(ts))> {
-		return reverse_iterator<decltype(end(ts))>(end(ts));
+	auto rend(_Tensor ts)->reverse_iterator<decltype(begin(ts))> {
+		return reverse_iterator<decltype(end(ts))>(begin(ts));
 	}
 
 }

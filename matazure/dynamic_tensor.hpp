@@ -71,11 +71,11 @@ namespace matazure {
 			sp_mem_.reset(p_mem_, [](byte *p) { delete[] p; });
 		}
 
-		dynamic_tensor(data_type type, shape_type ts_shape, shared_ptr<byte> sp_mem) :
+		dynamic_tensor(data_type type, shape_type ts_shape, shared_ptr<void> sp_mem) :
 			type_(type),
 			ts_shape_(ts_shape),
 			size_(reduce(ts_shape_, 1, [](auto x0, auto x1){ return x0 * x1; })),
-			sp_mem_(sp_mem)
+			sp_mem_(std::static_pointer_cast<byte>(sp_mem))
 		{ }
 
 		data_type type() const {
