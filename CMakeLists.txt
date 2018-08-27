@@ -40,14 +40,14 @@ else()
 	option(WITH_OPENMP "With OpenMP" OFF)
 endif()
 if(WITH_OPENMP)
-	# clang not surpport 
+	# clang not surpport
 	# if(NOT OPENMP_FOUND)
 	# 	message(FATAL_ERROR "OPENMP_FOUND is not found")
 	# endif()
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")	
-	
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+
 	if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")	
+		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
 	endif()
 endif()
 
