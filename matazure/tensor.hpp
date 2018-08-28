@@ -1,4 +1,4 @@
-/**
+﻿/**
 * Defines tensor classes of host end
 */
 
@@ -626,21 +626,30 @@ public:
 
 	/**
 	* @brief accesses element by array access mode
+	* @param idx array index
+	* @return element const reference
+	*/
+	reference operator()(const pointi<rank> &idx) const {
+		return (*this)[layout_.index2offset(idx)];
+	}
+
+	/**
+	* @brief accesses element by array access mode
 	* @param idx packed array index parameters
 	* @return element const reference
 	*/
 	template <typename ..._Idx>
 	reference operator()(_Idx... idx) const {
-		return (*this)[pointi<rank>{ idx... }];
+		return (*this)(pointi<rank>{ idx... });
 	}
 
 	/// prevents operator() const matching with pointi<rank> argument
-	template <typename _Idx>
-	reference operator()(_Idx idx) const {
-		static_assert(std::is_same<_Idx, int_t>::value && rank == 1,\
-					  "only operator [] support access data by pointi");
-		return (*this)[pointi<1>{idx}];
-	}
+	//template <typename _Idx>
+	//reference operator()(_Idx idx) const {
+	//	static_assert(std::is_same<_Idx, int_t>::value && rank == 1,\
+	//				  "only operator [] support access data by pointi");
+	//	return (*this)[pointi<1>{idx}];
+	//}
 
 	/// @return the shape of tensor
 	pointi<rank> shape() const {
@@ -797,6 +806,15 @@ public:
 	* @return element const reference
 	*/
 	reference operator[](pointi<rank> idx) const {
+		return index_imp<index_type>(idx);
+	}
+
+	/**
+	* @brief accesses element by array access mode
+	* @param idx array index
+	* @return element const reference
+	*/
+	reference operator()(pointi<rank> idx) const {
 		return index_imp<index_type>(idx);
 	}
 
