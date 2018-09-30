@@ -1,10 +1,6 @@
 execute_process(COMMAND git submodule update --init ${CMAKE_CURRENT_SOURCE_DIR})
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vendor/googletest/googletest)
-set_property(TARGET gtest PROPERTY FOLDER "vendor")
-set_property(TARGET gtest_main PROPERTY FOLDER "vendor")
-
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/vendor/googletest/googletest/include)
 
 file(GLOB Files ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
 set_source_files_properties(${Files} PROPERTIES LANGUAGE CXX)
@@ -33,10 +29,16 @@ if(WITH_CUDA)
 	add_dependencies(hete_cu_tensor_test gtest)
 	target_link_libraries(hete_cu_tensor_test gtest)
 	set_property(TARGET hete_cu_tensor_test PROPERTY FOLDER "test")
-	
+
 	file(GLOB Files ${CMAKE_CURRENT_SOURCE_DIR}/cuda/*.cu)
 	CUDA_ADD_EXECUTABLE(cu_tensor_test ${Files})
 	add_dependencies(cu_tensor_test gtest)
 	target_link_libraries(cu_tensor_test gtest)
 	set_property(TARGET cu_tensor_test PROPERTY FOLDER "test")
 endif()
+
+
+add_subdirectory(external)
+
+add_executable(TensorUT ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp)
+target_link_libraries(TensorUT SerializeUT)

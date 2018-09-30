@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <matazure/tensor.hpp>
 
@@ -32,7 +32,7 @@ namespace matazure {
 	template <> struct get_data_type_traits<float> { const static data_type value = dt_float32; };
 	template <> struct get_data_type_traits<double> { const static data_type value = dt_float64; };
 
-	int_t get_data_type_size(data_type type) {
+	inline int_t get_data_type_size(data_type type) {
 		switch (type) {
 			case dt_uint8:
 				return 1;

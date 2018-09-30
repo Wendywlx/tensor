@@ -18,3 +18,7 @@
 	path = example/vendor/stb
 	url = https://github.com/Matazure/stb.git
 	shallow = true
+[submodule "dependency/cereal"]
+	path = dependency/cereal
+	url = https://github.com/USCiLab/cereal.git
+	shallow = true

@@ -52,8 +52,8 @@ if(WITH_OPENMP)
 endif()
 
 option(BUILD_EXAMPLE "Build Example" ON)
+option(BUILD_TEST "Build Test" ON)
 option(BUILD_BENCHMARK "Build Benchmark" OFF)
-option(BUILD_TEST "Build Test" OFF)
 
 message("current compiler is ${CMAKE_CXX_COMPILER}")
 
@@ -107,6 +107,8 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
+add_subdirectory(dependency)
+
 if (BUILD_EXAMPLE)
 	add_subdirectory(example)
 endif()
@@ -118,3 +120,5 @@ endif()
 if (BUILD_TEST)
 	add_subdirectory(test)
 endif()
+
+

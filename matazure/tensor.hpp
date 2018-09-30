@@ -941,7 +941,8 @@ inline auto reshape(tensor<_ValueType, _Rank, _Layout> ts, pointi<_OutDim> ext, 
 template <typename _ValueType, typename _Layout = column_major_layout>
 using matrix = tensor<_ValueType, 2, _Layout>;
 
-#ifndef MATAZURE_DISABLE_VECTOR_ALIAS
+
+#ifdef MATAZURE_ENABLE_VECTOR_ALIAS
 /// alias of tensor <_ValueType, 1>
 template <typename _ValueType, typename _Layout = first_major_layout<1>>
 using vector = tensor<_ValueType, 1, _Layout>;
