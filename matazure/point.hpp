@@ -61,11 +61,11 @@ public:
 		return re;
 	}
 
-	MATAZURE_GENERAL value_type * data() {
+	MATAZURE_GENERAL constexpr value_type * data() {
 		return elements_;
 	}
 
-	MATAZURE_GENERAL const value_type * data() const {
+	MATAZURE_GENERAL constexpr const value_type * data() const {
 		return elements_;
 	}
 
