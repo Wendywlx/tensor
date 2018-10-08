@@ -1,7 +1,6 @@
 ﻿#pragma once
 
-//#if __has_include(<cereal/cereal.hpp>)
-//#if __has_include(<cereal/cereal.hpp>)
+#if __has_include(<cereal/cereal.hpp>)
 
 #include <cereal/cereal.hpp>
 #include <matazure/point.hpp>
@@ -46,4 +45,4 @@ namespace cereal {
 	}
 } // namespace cereal
 
-//#endif
+#endif
