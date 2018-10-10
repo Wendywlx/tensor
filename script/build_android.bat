@@ -25,11 +25,12 @@ cmake .. ^
     -DANDROID_NDK=%ANDROID_NDK% ^
     -DANDROID_ABI=%ANDROID_ABI% ^
     -DANDROID_ARM_NEON=true ^
+    -DANDROID_NATIVE_API_LEVEL=22 ^
     -DANDROID_TOOLCHAIN=clang ^
-    -DANDROID_NATIVE_API_LEVEL=21 ^
+    -DANDROID_STL="c++_static" ^
     -DCMAKE_BUILD_TYPE=Release ^
     -G "Unix Makefiles" ^
     %* ^
     || exit /b
 
-cmake --build . || exit /b
+cmake --build .  -- -j || exit /b

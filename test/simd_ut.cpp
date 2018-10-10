@@ -14,18 +14,30 @@ TEST(TestSSE, TestArithmeticOperation){
 
 	__m128 re;
 	re = lhs + rhs;
+
+	EXPECT_FLOAT_EQ(re[0], 5.0f);
+	EXPECT_FLOAT_EQ(re[1], 5.0f);
+	EXPECT_FLOAT_EQ(re[2], 5.0f);
+	EXPECT_FLOAT_EQ(re[3], 5.0f);
 }
 
 #endif
 
 #ifdef MATAZURE_NEON
 
+#include <arm_neon.h>
+
+
 TEST(TestNEON, TestArithmeticOperation){
 	float32x4_t lhs{0.0f, 1.0f, 2.0f, 3.0f};
-	float32x4_t rhs{0.0f, 0.1f, 0.2f, 0.3f};
+	float32x4_t rhs{ 0.0f, 0.1f, 0.2f, 0.3f };
 
-	lhs += rhs;
 	auto re = lhs + rhs;
+
+	EXPECT_FLOAT_EQ(re[0], 0.0f);
+	EXPECT_FLOAT_EQ(re[1], 1.1f);
+	EXPECT_FLOAT_EQ(re[2], 2.2f);
+	EXPECT_FLOAT_EQ(re[3], 3.3f);
 }
 
 #endif

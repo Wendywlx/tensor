@@ -1,4 +1,4 @@
-#include <benchmark/benchmark.h>
+﻿#include <benchmark/benchmark.h>
 #include <bm_config.hpp>
 #include <matazure/tensor>
 
@@ -65,8 +65,12 @@ void bm_gold_host_tensor_rank1_mul(benchmark::State &state) {
 
 	while (state.KeepRunning()) {
 		tensor<_ValueType, 1> ts_re(ts0.shape());
-		for (int_t i = 0, size = ts_re.size(); i < size; ++i) {
-			ts_re[i] = ts0[i] * ts1[i];
+		for (int_t i = 0, size = ts_re.size(); i < size; i += 1024) {
+			auto b = ts0[i + 1024];
+			auto c = ts1[i + 1024];
+			for (int_t j = 0; j < 1024; ++j) {
+				ts_re[i+j] = ts0[i+j] * ts1[i+j];
+			}
 		}
 
 		benchmark::ClobberMemory();
@@ -74,7 +78,7 @@ void bm_gold_host_tensor_rank1_mul(benchmark::State &state) {
 
 	auto bytes_size = static_cast<size_t>(ts0.size()) * sizeof(decltype(ts0[0]));
 	state.SetBytesProcessed(state.iterations() * bytes_size * 3);
-	state.SetItemsProcessed(state.iterations() * bytes_size);
+	state.SetItemsProcessed(state.iterations() * static_cast<size_t>(ts0.size()));
 }
 
 #define BM_GOLD_HOST_TENSOR_RANK1_MUL(ValueType) \
@@ -111,7 +115,7 @@ void bm_hete_tensor_##Name(benchmark::State &state) {									\
 																						\
 	auto bytes_size = static_cast<size_t>(ts_re.size()) * sizeof(decltype(ts_re[0]));	\
 	state.SetBytesProcessed(state.iterations() * bytes_size * 3);						\
-	state.SetItemsProcessed(state.iterations() * bytes_size);							\
+	state.SetItemsProcessed(state.iterations() * static_cast<size_t>(ts0.size()));		\
 }
 
 //Arithmetic

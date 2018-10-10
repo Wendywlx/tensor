@@ -2,6 +2,8 @@ execute_process(COMMAND git submodule update --init ${CMAKE_CURRENT_SOURCE_DIR})
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vendor/googletest/googletest)
 
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/vendor/googletest/googletest/include)
+
 file(GLOB Files ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
 set_source_files_properties(${Files} PROPERTIES LANGUAGE CXX)
 add_executable(tensor_test ${Files})

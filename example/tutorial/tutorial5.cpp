@@ -14,7 +14,7 @@ int main() {
 	//persist lts to ts0
 	tensor<int, 2> ts0(lts.shape());
 	for_index(lts.shape(), [=](pointi<2> idx) {
-		ts0(idx) == lts(idx);
+		ts0(idx) = lts(idx);
 	});
 	//presist lts to ts1
 	auto ts1 = lts.persist();

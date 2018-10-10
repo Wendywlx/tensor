@@ -58,7 +58,7 @@ int main() {
 		auto ts_re = lts2f_re2.persist();
 
 		auto t1 = std::chrono::high_resolution_clock::now();
-		printf("lazy evaluation cost time: %u ms\n", std::chrono::duration_cast<std::chrono::milliseconds>(t1 - t0).count());
+		printf("lazy evaluation cost time: %lld ms\n", std::chrono::duration_cast<std::chrono::milliseconds>(t1 - t0).count());
 	}
 
 	{
@@ -72,7 +72,7 @@ int main() {
 		auto ts2f_re2 = immediate::add(ts2f_re0, ts2f_re1);
 
 		auto t1 = std::chrono::high_resolution_clock::now();
-		printf("immediate evaluation cost time: %u ms\n", std::chrono::duration_cast<std::chrono::milliseconds>(t1 - t0).count());
+		printf("immediate evaluation cost time: %lld ms\n", std::chrono::duration_cast<std::chrono::milliseconds>(t1 - t0).count());
 	}
 
 	return 0;

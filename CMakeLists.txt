@@ -10,9 +10,12 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
   # using Visual Studio C++
 endif()
 
-project(MatazureTensor CXX)
+project(Matazure.Tensor CXX)
 
 set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_EXTENSIONS ON)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 
 find_package(OPENCL)
 if(OPENCL_FOUND)
@@ -53,7 +56,7 @@ endif()
 
 option(BUILD_EXAMPLE "Build Example" ON)
 option(BUILD_TEST "Build Test" ON)
-option(BUILD_BENCHMARK "Build Benchmark" OFF)
+option(BUILD_BENCHMARK "Build Benchmark" ON)
 
 message("current compiler is ${CMAKE_CXX_COMPILER}")
 
@@ -100,7 +103,7 @@ if (WITH_CUDA)
 	endif()
 
 	#disable sse,because the cuda 9.0 bug with sse
-	add_definitions(-DMATAZURE_DISABLE_SSE)
+	#add_definitions(-DMATAZURE_DISABLE_SSE)
 endif()
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
