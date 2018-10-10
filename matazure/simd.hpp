@@ -77,6 +77,9 @@ struct zero<float32x4_t>{
 
 #endif
 
-//#if
-//
-//#endif
+
+#ifdef MATAZURE_NEON
+
+#include <matazure/simd/neon.hpp>
+
+#endif
