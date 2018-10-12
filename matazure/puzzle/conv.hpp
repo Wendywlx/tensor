@@ -18,7 +18,7 @@ namespace internal{
 			auto kernel_radius = (ts_kernel_.shape() / 2);
 			auto sum = zero<typename _TensorSrc::value_type>::value();
 			for_index(pointi<_TensorSrc::rank>::zeros(), ts_kernel_.shape(), [&](const pointi<2> &kenel_idx) {
-				sum += ts_src_[idx + kenel_idx - kernel_radius] * ts_kernel_[kenel_idx];
+				sum = sum + ts_src_[idx + kenel_idx - kernel_radius] * ts_kernel_[kenel_idx];
 			});
 			return sum;
 		}

@@ -11,7 +11,7 @@ if not exist %ANDROID_NDK% (
 )
 
 if NOT DEFINED ANDROID_ABI (
-  rem set ANDROID_ABI="arm64-v8a"
+  set ANDROID_ABI="arm64-v8a"
   echo "Set ANDROID_ABI %ANDROID_ABI%"
 )
 
@@ -24,7 +24,7 @@ cmake .. ^
     -DCMAKE_MAKE_PROGRAM="%ANDROID_NDK%/prebuilt/windows-x86_64/bin/make.exe" ^
     -DANDROID_NDK=%ANDROID_NDK% ^
     -DANDROID_ABI=%ANDROID_ABI% ^
-    -DANDROID_ARM_NEON=true ^
+    -DANDROID_ARM_NEON=false ^
     -DANDROID_NATIVE_API_LEVEL=22 ^
     -DANDROID_TOOLCHAIN=clang ^
     -DANDROID_STL="c++_static" ^

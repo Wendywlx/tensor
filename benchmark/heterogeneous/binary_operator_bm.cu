@@ -76,9 +76,10 @@ void bm_gold_host_tensor_rank1_mul(benchmark::State &state) {
 		benchmark::ClobberMemory();
 	}
 
-	auto bytes_size = static_cast<size_t>(ts0.size()) * sizeof(decltype(ts0[0]));
+	size_t element_size = ts0.size();
+	auto bytes_size = element_size * sizeof(decltype(ts0[0]));
 	state.SetBytesProcessed(state.iterations() * bytes_size * 3);
-	state.SetItemsProcessed(state.iterations() * static_cast<size_t>(ts0.size()));
+	state.SetItemsProcessed(state.iterations() * element_size);
 }
 
 #define BM_GOLD_HOST_TENSOR_RANK1_MUL(ValueType) \

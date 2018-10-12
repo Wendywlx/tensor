@@ -16,7 +16,6 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_EXTENSIONS ON)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-
 find_package(OPENCL)
 if(OPENCL_FOUND)
 	option(WITH_OPENCL "With OpenCL" ON)
@@ -82,7 +81,7 @@ if (UNIX)
 	set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3")
 
 	if (ANDROID)
-		# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=atom -mtune=atom")
+		#set(CMAKE_CXX_FLAGS "-mfpu=neon-f16p ${CMAKE_CXX_FLAGS}")
 	endif()
 endif()
 

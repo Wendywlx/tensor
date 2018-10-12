@@ -889,7 +889,7 @@ void bm_gold_conv_3x3_sse2_inside_check(benchmark::State &state){
 		for(int_t j = 0; j < ts_input.shape()[1] ; ++j) {
 			for (int_t i = 0; i < ts_input.shape()[0] ; ++i) {
 
-				__m128 sum = _mm_setzero_ps();
+				__m128 sum = _mm_setzero_ps();;
 
 				if (MATAZURE_LIKELY(inside_range(pointi<2>{i, j}, pointi<2>{1,1}, ts_input.shape() - 2))){
 					for_index(pointi<2>{0,0}, kenel.shape(), [&](pointi<2> kenel_idx){
@@ -945,7 +945,7 @@ void bm_gold_conv_3x3_sse2_op_inside_check(benchmark::State &state) {
 		for (int_t j = 0; j < ts_input.shape()[1]; ++j) {
 			for (int_t i = 0; i < ts_input.shape()[0]; ++i) {
 
-				__m128 sum = zero<__m128>::value();
+				__m128 sum = _mm_setzero_ps();;
 
 				if (MATAZURE_LIKELY(inside_range(pointi<2>{i, j}, pointi<2>{1, 1}, ts_input.shape() - 2))) {
 					for_index(pointi<2>{0, 0}, kenel.shape(), [&](pointi<2> kenel_idx) {
@@ -954,7 +954,7 @@ void bm_gold_conv_3x3_sse2_op_inside_check(benchmark::State &state) {
 				}
 				else {
 					for_index(pointi<2>{0, 0}, kenel.shape(), [&](pointi<2> kenel_idx) {
-						__m128 value = zero<__m128>::value();
+						__m128 value = _mm_setzero_ps();
 						auto value_index = pointi<2>{ i, j } +kenel_idx - kenel_radius;
 						if (MATAZURE_LIKELY(inside_range(value_index, pointi<2>{1, 1}, ts_input.shape() - 2))) {
 							value = ts_input[value_index];
@@ -987,6 +987,7 @@ void bm_gold_conv_3x3_neon2_op_inside_check(benchmark::State &state) {
 	tensor<neon_vector<float, 4>, 2> ts_input(ext);
 	tensor<neon_vector<float, 4>, 2> ts_output(ts_input.shape());
 	static_tensor<neon_vector<float, 4>, dim<3, 3>> kenel;
+
 	for_each(ts_input, [](neon_vector<float, 4> &e) {
 		point<float, 4> tmp = { 1.1f, 1.2f, 1.2f, 1.3f };
 		e = { vld1q_f32(reinterpret_cast<float *>(&tmp)) };
@@ -1041,6 +1042,67 @@ void bm_gold_conv_3x3_neon2_op_inside_check(benchmark::State &state) {
 	state.SetItemsProcessed(state.iterations() * valid_size * 9 * 4);
 }
 BENCHMARK(bm_gold_conv_3x3_neon2_op_inside_check)->Arg(7)->Arg(14)->Arg(28)->Arg(56)->Arg(112)->Arg(224)->UseRealTime();
+
+void bm_gold_conv_3x3_neon_float16_op_inside_check(benchmark::State &state) {
+	pointi<2> ext;
+	fill(ext, state.range(0));
+	tensor<neon_vector<float16_t, 8>, 2> ts_input(ext);
+	tensor<neon_vector<float16_t, 8>, 2> ts_output(ts_input.shape());
+	static_tensor<neon_vector<float16_t, 8>, dim<3, 3>> kenel;
+	for_each(ts_input, [](neon_vector<float16_t, 8> &e) {
+		point<float16_t, 8> tmp = { 1.1f, 1.2f, 1.2f, 1.3f, 1.4f, 1.5f, 1.6f, 1.7f };
+		e = { vld1q_f16(reinterpret_cast<float16_t *>(&tmp)) };
+
+	});
+	for_each(ts_output, [](neon_vector<float16_t, 8> &e) {
+		point<float16_t, 8> tmp = { 1.1f, 1.2f, 1.2f, 1.3f, 1.4f, 1.5f, 1.6f, 1.7f };
+		e = { vld1q_f16(reinterpret_cast<float16_t *>(&tmp)) };
+
+	});
+	for_each(kenel, [](neon_vector<float16_t, 8> &e) {
+		point<float16_t, 8> tmp = { 1.1f, 1.2f, 1.2f, 1.3f, 1.4f, 1.5f, 1.6f, 1.7f };
+		e = { vld1q_f16(reinterpret_cast<float16_t *>(&tmp)) };
+	});
+
+	auto width = ts_input.shape()[0];
+	auto height = ts_input.shape()[1];
+	const auto shape = ts_input.shape();
+
+	while (state.KeepRunning()) {
+		auto kenel_radius = kenel.shape() / 2;
+		for (int_t j = 0; j < ts_input.shape()[1]; ++j) {
+			for (int_t i = 0; i < ts_input.shape()[0]; ++i) {
+
+				neon_vector<float16_t, 8> sum = zero<neon_vector<float16_t, 8>>::value();
+
+				if (MATAZURE_LIKELY(inside_range(pointi<2>{i, j}, pointi<2>{1, 1}, ts_input.shape() - 2))) {
+					for_index(pointi<2>{0, 0}, kenel.shape(), [&](pointi<2> kenel_idx) {
+						sum = sum + (ts_input[pointi<2>{i, j} +kenel_idx - kenel_radius] * kenel[kenel_idx]);
+					});
+				} else {
+					for_index(pointi<2>{0, 0}, kenel.shape(), [&](pointi<2> kenel_idx) {
+						neon_vector<float16_t, 8> value = zero<neon_vector<float16_t, 8>>::value();
+						auto value_index = pointi<2>{ i, j } +kenel_idx - kenel_radius;
+						if (MATAZURE_LIKELY(inside_range(value_index, pointi<2>{1, 1}, ts_input.shape() - 2))) {
+							value = ts_input[value_index];
+						}
+						sum = value * kenel[kenel_idx];
+					});
+				}
+
+				ts_output[pointi<2>{i, j}] = sum;
+			}
+		}
+
+		benchmark::ClobberMemory();
+	}
+
+	auto valid_shape = ts_output.shape() - 1;
+	auto valid_size = reduce(valid_shape, 1, [](int_t x, int_t y) { return x * y; });
+	state.SetBytesProcessed(state.iterations() * valid_size * 4 * 8);
+	state.SetItemsProcessed(state.iterations() * valid_size * 9 * 8);
+}
+BENCHMARK(bm_gold_conv_3x3_neon_float16_op_inside_check)->Arg(7)->Arg(14)->Arg(28)->Arg(56)->Arg(112)->Arg(224)->UseRealTime();
 
 #endif
 

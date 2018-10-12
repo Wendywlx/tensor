@@ -53,7 +53,8 @@ namespace matazure {
 			case dt_float64:
 				return 8;
 			default:
-				return std::numeric_limits<size_t>::max();
+				MATAZURE_ASSERT(false, "unreachable");
+				return 0;
 		}
 	}
 

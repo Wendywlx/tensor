@@ -25,12 +25,9 @@ TEST(TestSSE, TestArithmeticOperation){
 
 #ifdef MATAZURE_NEON
 
-#include <arm_neon.h>
-
-
 TEST(TestNEON, TestArithmeticOperation){
-	float32x4_t lhs{0.0f, 1.0f, 2.0f, 3.0f};
-	float32x4_t rhs{ 0.0f, 0.1f, 0.2f, 0.3f };
+	neon_vector<float, 4> lhs{ 0.0f, 1.0f, 2.0f, 3.0f};
+	neon_vector<float, 4> rhs{ 0.0f, 0.1f, 0.2f, 0.3f };
 
 	auto re = lhs + rhs;
 
