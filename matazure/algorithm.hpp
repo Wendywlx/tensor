@@ -112,7 +112,7 @@ inline MATAZURE_GENERAL void for_index(omp_vectorized_policy policy, int_t first
 */
 template <typename _Func>
 inline MATAZURE_GENERAL void for_index(int_t first, int_t last, _Func fun) {
-	sequence_vectorized_policy seq{};
+	sequence_policy seq{};
 	for_index(seq, first, last, fun);
 }
 
@@ -599,6 +599,13 @@ inline MATAZURE_GENERAL _VT reduce(const _Tensor &ts, _VT init, _BinaryFunc bina
 	});
 
 	return re;
+}
+
+template <typename _Tensor>
+inline MATAZURE_GENERAL auto sum(const _Tensor &ts) {
+	return reduce(ts, zero<typename _Tensor::value_type>::value(), [](auto lhs, auto rhs) {
+		return lhs + rhs;
+	});
 }
 
 }

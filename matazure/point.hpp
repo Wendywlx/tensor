@@ -160,12 +160,7 @@ MATAZURE_POINT_BINARY_OPERATOR(!=)
 
 template <typename _T, int_t _Rank>
 MATAZURE_GENERAL point<_T, _Rank> operator+(const point<_T, _Rank> &p) {
-	point<_T, _Rank> temp;
-	for (int_t i = 0; i < _Rank; ++i) {
-		temp[i] = +p[i];
-	}
-
-	return temp;
+	return p;
 }
 
 template <typename _T, int_t _Rank>
@@ -366,6 +361,43 @@ inline MATAZURE_GENERAL bool outside_range(pointi<4> idx, pointi<4> left_top, po
 	} else{
 		return false;
 	}
+}
+
+//pointi<3>
+template <int_t _SliceDimIdx>
+inline pointi<2> slice_point(pointi<3> pt);
+
+template < >
+inline pointi<2> slice_point<0>(pointi<3> pt) {
+	return pointi<2>{get<1>(pt), get<2>(pt)};
+}
+
+template < >
+inline pointi<2> slice_point<1>(pointi<3> pt) {
+	return pointi<2>{get<0>(pt), get<2>(pt)};
+}
+
+template < >
+inline pointi<2> slice_point<2>(pointi<3> pt) {
+	return pointi<2>{get<0>(pt), get<1>(pt)};
+}
+
+template <int_t _CatDimIdx>
+inline pointi<3> cat_point(pointi<2> pt, int_t cat_i);
+
+template <>
+inline pointi<3> cat_point<0>(pointi<2> pt, int_t cat_i) {
+	return pointi<3>{cat_i, get<0>(pt), get<1>(pt)};
+}
+
+template <>
+inline pointi<3> cat_point<1>(pointi<2> pt, int_t cat_i) {
+	return pointi<3>{get<0>(pt), cat_i, get<1>(pt)};
+}
+
+template <>
+inline pointi<3> cat_point<2>(pointi<2> pt, int_t cat_i) {
+	return pointi<3>{get<0>(pt), get<1>(pt), cat_i};
 }
 
 /**

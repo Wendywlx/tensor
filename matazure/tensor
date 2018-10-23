@@ -7,6 +7,8 @@
 #include <matazure/dynamic_tensor.hpp>
 #include <matazure/iterator.hpp>
 
+#include <matazure/complex.hpp>
+
 #include <matazure/puzzle/prod.hpp>
 #include <matazure/puzzle/conv.hpp>
 

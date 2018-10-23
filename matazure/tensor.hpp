@@ -937,6 +937,20 @@ inline auto reshape(tensor<_ValueType, _Rank, _Layout> ts, pointi<_OutDim> ext, 
 	return re;
 }
 
+template <typename _T, int_t _Rank>
+inline auto split(tensor<_T, _Rank, first_major_layout<_Rank>> ts) {
+	const auto slice_ext = slice_point<_Rank - 1>(ts.shape());
+	auto slice_size = cumulative_prod(slice_ext)[slice_ext.size() - 1];
+
+	using splitted_tensor_t = tensor<_T, _Rank - 1, first_major_layout<_Rank - 1>>;
+	tensor<splitted_tensor_t, 1> ts_splitted(ts.shape()[_Rank - 1]);
+	for (int_t i = 0; i < ts_splitted.size(); ++i) {
+		ts_splitted[i] = splitted_tensor_t(slice_ext, shared_ptr<_T>(ts.shared_data().get() + i * slice_size, [ts](_T *) {}));
+	}
+
+	return ts_splitted;
+}
+
 /// alias of tensor<_ValueType, 2>
 template <typename _ValueType, typename _Layout = column_major_layout>
 using matrix = tensor<_ValueType, 2, _Layout>;

@@ -28,7 +28,7 @@ namespace matazure { inline namespace simd {
 		* @return element const referece
 		*/
 		MATAZURE_GENERAL const float & operator[](int_t i) const {
-			return elements_[i];
+			return data()[i];
 		}
 
 		/**
@@ -36,8 +36,8 @@ namespace matazure { inline namespace simd {
 		* @param i element index
 		* @return element referece
 		*/
-		MATAZURE_GENERAL float operator[](int_t i) {
-			return elements_[i];
+		MATAZURE_GENERAL float & operator[](int_t i) {
+			return data()[i];
 		}
 
 	#endif

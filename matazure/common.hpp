@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <matazure/tensor.hpp>
 #include <matazure/algorithm.hpp>
@@ -286,43 +286,6 @@ inline pointi<2> cat_point<1>(pointi<1> pt, int_t cat_i){
 	return pointi<2>{get<0>(pt), cat_i};
 }
 
-//pointi<3>
-template <int_t _SliceDimIdx>
-inline pointi<2> slice_point(pointi<3> pt);
-
-template < >
-inline pointi<2> slice_point<0>(pointi<3> pt){
-	return pointi<2>{get<1>(pt), get<2>(pt)};
-}
-
-template < >
-inline pointi<2> slice_point<1>(pointi<3> pt){
-	return pointi<2>{get<0>(pt), get<2>(pt)};
-}
-
-template < >
-inline pointi<2> slice_point<2>(pointi<3> pt){
-	return pointi<2>{get<0>(pt), get<1>(pt)};
-}
-
-template <int_t _CatDimIdx>
-inline pointi<3> cat_point(pointi<2> pt, int_t cat_i);
-
-template <>
-inline pointi<3> cat_point<0>(pointi<2> pt, int_t cat_i){
-	return pointi<3>{cat_i, get<0>(pt), get<1>(pt)};
-}
-
-template <>
-inline pointi<3> cat_point<1>(pointi<2> pt, int_t cat_i){
-	return pointi<3>{get<0>(pt), cat_i, get<1>(pt)};
-}
-
-template <>
-inline pointi<3> cat_point<2>(pointi<2> pt, int_t cat_i){
-	return pointi<3>{get<0>(pt), get<1>(pt), cat_i};
-}
-
 template <typename _Tensor, int_t _SliceDimIdx>
 struct slice_op {
 private:
@@ -499,15 +462,6 @@ inline auto resize(_Tensor ts, const pointi<_Tensor::rank> &resize_ext)->decltyp
 template <int_t _DimIdx, typename _Tensor>
 inline auto slice(_Tensor ts, int_t positon_index)->decltype(make_lambda(internal::slice_point<_DimIdx>(ts.shape()), internal::slice_op<_Tensor, _DimIdx>(ts, positon_index), typename _Tensor::memory_type{})){
 	return make_lambda(internal::slice_point<_DimIdx>(ts.shape()), internal::slice_op<_Tensor, _DimIdx>(ts, positon_index), typename _Tensor::memory_type{});
-}
-
-/// special for slice<rank-1>(tensor<_T, rank>, position_index), it produces a tensor<_T, rank-1>
-template <typename _T, int_t _Rank>
-inline auto dense_slice(tensor<_T, _Rank, first_major_layout<_Rank>> ts, int_t positon_index)->tensor<_T, _Rank-1, first_major_layout<_Rank-1>>{
-	const auto slice_ext = internal::slice_point<_Rank-1>(ts.shape());
-	auto slice_size = cumulative_prod(slice_ext)[_Rank-1];
-	tensor<_T, _Rank-1, first_major_layout<_Rank-1>> ts_re(slice_ext, shared_ptr<_T>(ts.shared_data().get() + positon_index * slice_size, [ts](_T *){ }));
-	return ts_re;
 }
 
 #ifdef MATAZURE_CUDA
