@@ -13,7 +13,7 @@ namespace matazure {
 		template <>
 		class neon_vector<float, 4> {
 		public:
-			/// point length
+			/// neon_vector length
 			static const int_t				rank = 4;
 			typedef float					value_type;
 			typedef value_type &			reference;
@@ -42,7 +42,7 @@ namespace matazure {
 
 		#endif
 
-			/// return the length of point
+			/// return the length of neon_vector
 			MATAZURE_GENERAL constexpr int_t size() const {
 				return rank;
 			}
@@ -92,6 +92,39 @@ namespace matazure {
 	MATAZURE_NEON_FLOAT_BINARY_OPERATOR(cle, <=)
 	MATAZURE_NEON_FLOAT_BINARY_OPERATOR(ceq, ==)
 	MATAZURE_NEON_FLOAT_BINARY_OPERATOR(cneq, !=)
+
+	template <typename _T, int_t _Rank>
+	inline MATAZURE_GENERAL neon_vector<_T, _Rank> operator+(const neon_vector<_T, _Rank> &p) {
+		return p;
+	}
+
+	template <typename _T, int_t _Rank>
+	inline MATAZURE_GENERAL neon_vector<_T, _Rank> operator-(const neon_vector<_T, _Rank> &p) {
+		neon_vector<_T, _Rank> temp;
+		for (int_t i = 0; i < _Rank; ++i) {
+			temp[i] = -p[i];
+		}
+
+		return temp;
+	}
+
+	template <typename _T, int_t _Rank>
+	inline MATAZURE_GENERAL neon_vector<_T, _Rank>& operator++(neon_vector<_T, _Rank> &p) {
+		for (int_t i = 0; i < _Rank; ++i) {
+			++p[i];
+		}
+
+		return p;
+	}
+
+	template <typename _T, int_t _Rank>
+	inline MATAZURE_GENERAL neon_vector<_T, _Rank>& operator--(neon_vector<_T, _Rank> &p) {
+		for (int_t i = 0; i < _Rank; ++i) {
+			--p[i];
+		}
+
+		return p;
+	}
 
 #ifdef __GNUC__
 

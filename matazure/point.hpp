@@ -159,12 +159,12 @@ MATAZURE_POINT_BINARY_OPERATOR(==)
 MATAZURE_POINT_BINARY_OPERATOR(!=)
 
 template <typename _T, int_t _Rank>
-MATAZURE_GENERAL point<_T, _Rank> operator+(const point<_T, _Rank> &p) {
+inline MATAZURE_GENERAL point<_T, _Rank> operator+(const point<_T, _Rank> &p) {
 	return p;
 }
 
 template <typename _T, int_t _Rank>
-MATAZURE_GENERAL point<_T, _Rank> operator-(const point<_T, _Rank> &p) {
+inline MATAZURE_GENERAL point<_T, _Rank> operator-(const point<_T, _Rank> &p) {
 	point<_T, _Rank> temp;
 	for (int_t i = 0; i < _Rank; ++i) {
 		temp[i] = -p[i];
@@ -174,7 +174,7 @@ MATAZURE_GENERAL point<_T, _Rank> operator-(const point<_T, _Rank> &p) {
 }
 
 template <typename _T, int_t _Rank>
-MATAZURE_GENERAL point<_T, _Rank>& operator++(point<_T, _Rank> &p) {
+inline MATAZURE_GENERAL point<_T, _Rank>& operator++(point<_T, _Rank> &p) {
 	for (int_t i = 0; i < _Rank; ++i) {
 		++p[i];
 	}
@@ -183,7 +183,7 @@ MATAZURE_GENERAL point<_T, _Rank>& operator++(point<_T, _Rank> &p) {
 }
 
 template <typename _T, int_t _Rank>
-MATAZURE_GENERAL point<_T, _Rank>& operator--(point<_T, _Rank> &p) {
+inline MATAZURE_GENERAL point<_T, _Rank>& operator--(point<_T, _Rank> &p) {
 	for (int_t i = 0; i < _Rank; ++i) {
 		--p[i];
 	}
@@ -192,7 +192,7 @@ MATAZURE_GENERAL point<_T, _Rank>& operator--(point<_T, _Rank> &p) {
 }
 
 template <typename _ValueTypeDst, typename _ValueTypeSrc, int_t _Rank>
-MATAZURE_GENERAL point<_ValueTypeDst, _Rank> point_cast(const point<_ValueTypeSrc, _Rank> &p) {
+inline MATAZURE_GENERAL point<_ValueTypeDst, _Rank> point_cast(const point<_ValueTypeSrc, _Rank> &p) {
 	point<_ValueTypeDst, _Rank> re;
 	for (int_t i = 0; i < _Rank; ++i) {
 		re[i] = static_cast<_ValueTypeDst>(p[i]);
@@ -203,21 +203,21 @@ MATAZURE_GENERAL point<_ValueTypeDst, _Rank> point_cast(const point<_ValueTypeSr
 
 /// get point element like as std::get
 template<int_t _Idx, class _Ty, int_t _Rank>
-MATAZURE_GENERAL constexpr _Ty& get(point<_Ty, _Rank>& pt) {
+inline MATAZURE_GENERAL constexpr _Ty& get(point<_Ty, _Rank>& pt) {
 	// return element at _Idx in point pt
 	static_assert(_Idx < _Rank, "point index out of bounds");
 	return (pt.elements_[_Idx]);
 }
 
 template<int_t _Idx, class _Ty, int_t _Rank>
-MATAZURE_GENERAL constexpr const _Ty& get(const point<_Ty, _Rank>& pt){
+inline MATAZURE_GENERAL constexpr const _Ty& get(const point<_Ty, _Rank>& pt){
 	// return element at _Idx in point pt
 	static_assert(_Idx < _Rank, "point index out of bounds");
 	return (pt.elements_[_Idx]);
 }
 
 template<int_t _Idx, class _Ty, int_t _Rank>
-MATAZURE_GENERAL constexpr _Ty&& get(point<_Ty, _Rank>&& pt) {
+inline MATAZURE_GENERAL constexpr _Ty&& get(point<_Ty, _Rank>&& pt) {
 	// return element at _Idx in point pt
 	static_assert(_Idx < _Rank, "point index out of bounds");
 	return (move(pt.elements_[_Idx]));

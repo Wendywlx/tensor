@@ -28,6 +28,11 @@ namespace matazure {
 	}
 
 	template <typename _ValueType>
+	complex<_ValueType> conj(const complex<_ValueType> &e) {
+		return complex<_ValueType>{ e.real, e.imag };
+	}
+
+	template <typename _ValueType>
 	struct zero<complex<_ValueType>> {
 		static constexpr complex<_ValueType> value() {
 			return {zero<_ValueType>::value(), zero<_ValueType>::value() };

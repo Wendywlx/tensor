@@ -83,6 +83,40 @@ namespace matazure { inline namespace simd {
 	MATAZURE_NEON_FLOAT_BINARY_OPERATOR(cmpeq, ==)
 	MATAZURE_NEON_FLOAT_BINARY_OPERATOR(cmpneq, !=)
 
+	template <typename _T, int_t _Rank>
+	inline MATAZURE_GENERAL sse_vector<_T, _Rank> operator+(const sse_vector<_T, _Rank> &p) {
+		return p;
+	}
+
+	template <typename _T, int_t _Rank>
+	inline MATAZURE_GENERAL sse_vector<_T, _Rank> operator-(const sse_vector<_T, _Rank> &p) {
+		sse_vector<_T, _Rank> temp;
+		for (int_t i = 0; i < _Rank; ++i) {
+			temp[i] = -p[i];
+		}
+
+		return temp;
+	}
+
+	template <typename _T, int_t _Rank>
+	inline MATAZURE_GENERAL sse_vector<_T, _Rank>& operator++(sse_vector<_T, _Rank> &p) {
+		for (int_t i = 0; i < _Rank; ++i) {
+			++p[i];
+		}
+
+		return p;
+	}
+
+	template <typename _T, int_t _Rank>
+	inline MATAZURE_GENERAL sse_vector<_T, _Rank>& operator--(sse_vector<_T, _Rank> &p) {
+		for (int_t i = 0; i < _Rank; ++i) {
+			--p[i];
+		}
+
+		return p;
+	}
+
+
 } }
 
 namespace matazure {
