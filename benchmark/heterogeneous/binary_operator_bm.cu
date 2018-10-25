@@ -98,9 +98,9 @@ BM_GOLD_HOST_TENSOR_RANK1_MUL(hete_float32x4_t)
 
 #endif
 
-#define BM_HETE_TENSOR_BINARY_OPERATOR_FUNC(Name, Op)									\
+#define BM_HETE_TENSOR_BINARY_OPERATOR_FUNC(OpName, Op)									\
 template <typename _Tensor>																\
-void bm_hete_tensor_##Name(benchmark::State &state) {									\
+void bm_hete_tensor_##OpName(benchmark::State &state) {									\
 	_Tensor ts0(pointi<_Tensor::rank>::all(state.range(0)));							\
 	_Tensor ts1(ts0.shape());															\
 	fill(ts0, zero<typename _Tensor::value_type>::value());								\
@@ -115,7 +115,7 @@ void bm_hete_tensor_##Name(benchmark::State &state) {									\
 	}																					\
 																						\
 	auto bytes_size = static_cast<size_t>(ts_re.size()) * sizeof(decltype(ts_re[0]));	\
-	state.SetBytesProcessed(state.iterations() * bytes_size * 3);						\
+	state.SetBytesProcessed(state.iterations() * bytes_size * 2);						\
 	state.SetItemsProcessed(state.iterations() * static_cast<size_t>(ts0.size()));		\
 }
 
@@ -124,6 +124,7 @@ BM_HETE_TENSOR_BINARY_OPERATOR_FUNC(add, +)
 BM_HETE_TENSOR_BINARY_OPERATOR_FUNC(sub, -)
 BM_HETE_TENSOR_BINARY_OPERATOR_FUNC(mul, *)
 BM_HETE_TENSOR_BINARY_OPERATOR_FUNC(div, /)
+//Mod
 BM_HETE_TENSOR_BINARY_OPERATOR_FUNC(mod, %)
 //Bit
 BM_HETE_TENSOR_BINARY_OPERATOR_FUNC(left_shift, <<)
@@ -142,28 +143,28 @@ BM_HETE_TENSOR_BINARY_OPERATOR_FUNC(le, <=)
 BM_HETE_TENSOR_BINARY_OPERATOR_FUNC(equal, ==)
 BM_HETE_TENSOR_BINARY_OPERATOR_FUNC(not_equal, !=)
 
-#define BM_HETE_TENSOR_BINARY_OPERATOR(Name, ValueType, Rank) \
-auto bm_hete_tensor_##ValueType##_rank##Rank##_##Name = bm_hete_tensor_##Name<HETE_TENSOR<ValueType, Rank>>; \
-BENCHMARK(bm_hete_tensor_##ValueType##_rank##Rank##_##Name)->RangeMultiplier(bm_config::range_multiplier<ValueType, Rank, HETE_TAG>())->Range(bm_config::min_shape<ValueType, Rank, HETE_TAG>(), bm_config::max_shape<ValueType, Rank, HETE_TAG>())->UseRealTime();
+#define BM_HETE_TENSOR_BINARY_OPERATOR(OpName, ValueType, Rank) \
+auto bm_hete_tensor_##ValueType##_rank##Rank##_##OpName = bm_hete_tensor_##OpName<HETE_TENSOR<ValueType, Rank>>; \
+BENCHMARK(bm_hete_tensor_##ValueType##_rank##Rank##_##OpName)->RangeMultiplier(bm_config::range_multiplier<ValueType, Rank, HETE_TAG>())->Range(bm_config::min_shape<ValueType, Rank, HETE_TAG>(), bm_config::max_shape<ValueType, Rank, HETE_TAG>())->UseRealTime();
 
-#define BM_HETE_TENSOR_RANK1234_BINARY_OPERATOR(Name, ValueType) \
-BM_HETE_TENSOR_BINARY_OPERATOR(Name, ValueType, 1) \
-BM_HETE_TENSOR_BINARY_OPERATOR(Name, ValueType, 2) \
-BM_HETE_TENSOR_BINARY_OPERATOR(Name, ValueType, 3) \
-BM_HETE_TENSOR_BINARY_OPERATOR(Name, ValueType, 4)
+#define BM_HETE_TENSOR_RANK1234_BINARY_OPERATOR(OpName, ValueType) \
+BM_HETE_TENSOR_BINARY_OPERATOR(OpName, ValueType, 1) \
+BM_HETE_TENSOR_BINARY_OPERATOR(OpName, ValueType, 2) \
+BM_HETE_TENSOR_BINARY_OPERATOR(OpName, ValueType, 3) \
+BM_HETE_TENSOR_BINARY_OPERATOR(OpName, ValueType, 4)
 
-#define BM_HETE_TENSOR_INTEGRAL_TYPES_RANK1234_BINARY_OPERATOR(Name) \
-BM_HETE_TENSOR_RANK1234_BINARY_OPERATOR(Name, byte) \
-BM_HETE_TENSOR_RANK1234_BINARY_OPERATOR(Name, int16_t) \
-BM_HETE_TENSOR_RANK1234_BINARY_OPERATOR(Name, int32_t) \
-BM_HETE_TENSOR_RANK1234_BINARY_OPERATOR(Name, int64_t)
+#define BM_HETE_TENSOR_INTEGRAL_TYPES_RANK1234_BINARY_OPERATOR(OpName) \
+BM_HETE_TENSOR_RANK1234_BINARY_OPERATOR(OpName, byte) \
+BM_HETE_TENSOR_RANK1234_BINARY_OPERATOR(OpName, int16_t) \
+BM_HETE_TENSOR_RANK1234_BINARY_OPERATOR(OpName, int32_t) \
+BM_HETE_TENSOR_RANK1234_BINARY_OPERATOR(OpName, int64_t)
 
-#define BM_HETE_TENSOR_TYPES_RANK1234_BINARY_OPERATOR_FLOATING(Name) \
-BM_HETE_TENSOR_RANK1234_BINARY_OPERATOR(Name, float) \
-BM_HETE_TENSOR_RANK1234_BINARY_OPERATOR(Name, double) \
-BM_HETE_TENSOR_RANK1234_BINARY_OPERATOR(Name, point3f) \
-BM_HETE_TENSOR_RANK1234_BINARY_OPERATOR(Name, point4f) \
-BM_HETE_TENSOR_RANK1234_BINARY_OPERATOR(Name, hete_float32x4_t)
+#define BM_HETE_TENSOR_TYPES_RANK1234_BINARY_OPERATOR_FLOATING(OpName) \
+BM_HETE_TENSOR_RANK1234_BINARY_OPERATOR(OpName, float) \
+BM_HETE_TENSOR_RANK1234_BINARY_OPERATOR(OpName, double) \
+BM_HETE_TENSOR_RANK1234_BINARY_OPERATOR(OpName, point3f) \
+BM_HETE_TENSOR_RANK1234_BINARY_OPERATOR(OpName, point4f) \
+BM_HETE_TENSOR_RANK1234_BINARY_OPERATOR(OpName, hete_float32x4_t)
 
 //Arithmetic
 BM_HETE_TENSOR_INTEGRAL_TYPES_RANK1234_BINARY_OPERATOR(add)
@@ -200,3 +201,21 @@ BM_HETE_TENSOR_TYPES_RANK1234_BINARY_OPERATOR_FLOATING(ge)
 BM_HETE_TENSOR_TYPES_RANK1234_BINARY_OPERATOR_FLOATING(le)
 BM_HETE_TENSOR_TYPES_RANK1234_BINARY_OPERATOR_FLOATING(equal)
 BM_HETE_TENSOR_TYPES_RANK1234_BINARY_OPERATOR_FLOATING(not_equal)
+
+//Complex
+using complexf = complex<float>;
+using complexp4f = complex<point<float, 4>>;
+using complexs4f = complex<simd_vector<float, 4>>;
+
+#define BM_HETE_TENSOR_TYPES_RANK1234_BINARY_OPERATOR_COMPLEX(OpName) \
+BM_HETE_TENSOR_RANK1234_BINARY_OPERATOR(OpName, complexf) \
+BM_HETE_TENSOR_RANK1234_BINARY_OPERATOR(OpName, complexp4f) \
+BM_HETE_TENSOR_RANK1234_BINARY_OPERATOR(OpName, complexs4f) 
+
+BM_HETE_TENSOR_TYPES_RANK1234_BINARY_OPERATOR_COMPLEX(add)
+BM_HETE_TENSOR_TYPES_RANK1234_BINARY_OPERATOR_COMPLEX(sub)
+BM_HETE_TENSOR_TYPES_RANK1234_BINARY_OPERATOR_COMPLEX(mul)
+
+
+
+
