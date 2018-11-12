@@ -12,6 +12,10 @@
 #include <matazure/simd/neon.hpp>
 #endif
 
+#if defined(MATAZURE_SSE) || defined(MATAZURE_NEON)
+#define MATAZUE_SIMD
+#endif
+
 namespace matazure {
 
 #if defined(MATAZURE_SSE) && !defined(MATAZURE_NEON)

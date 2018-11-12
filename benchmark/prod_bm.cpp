@@ -1,7 +1,10 @@
+﻿#define EIGEN_DONT_PARALLELIZE
+
 #include <bm_config.hpp>
 #include <matazure/tensor>
-// #include <Eigen/Core>
-// #include <Eigen/Dense>
+ #include <Eigen/Core>
+ #include <Eigen/Dense>
+
 
 using namespace matazure;
 
@@ -328,93 +331,97 @@ BENCHMARK(bm_tn_prod)
 	->Args({ 7 * 7, 512, 30})
 	->UseRealTime();
 
-// void bm_nn_eigen_prod(benchmark::State &state){
-// 	Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic> mat_lhs(state.range(0), state.range(1));
-// 	Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic> mat_rhs(state.range(1), state.range(2));
-// 	Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic> mat_output(state.range(0), state.range(2));
-// 	mat_lhs.setRandom();
-// 	mat_rhs.setRandom();
-//
-// 	while (state.KeepRunning()){
-// 		mat_output.noalias() = mat_lhs * mat_rhs;
-// 	#ifdef __linux__
-// 		benchmark::ClobberMemory();
-// 	#endif
-// 	}
-//
-// 	state.SetItemsProcessed(state.iterations() * mat_lhs.rows() * mat_lhs.cols() * mat_rhs.cols());
-// }
-// BENCHMARK(bm_nn_eigen_prod)
-// 	->Args({ 32, 32, 32 })
-// 	->Args({ 128, 128, 128 })
-// 	->Args({ 512, 512, 512 })
-// 	->Args({ 1024, 1024, 1024 })
-// 	//mobilenet_0.5
-// 	//general conv
-// 	->Args({ 112 * 112, 9, 3})
-// 	//depthwise conv
-// 	->Args({ 112 * 112, 9 ,1})
-// 	->Args({ 56 * 56, 9, 1})
-// 	->Args({ 28 * 28, 9, 1})
-// 	->Args({ 14 * 14, 9, 1})
-// 	->Args({ 7 * 7, 9, 1})
-// 	//pointwise conv
-// 	->Args({ 112 * 112, 16, 32})
-// 	->Args({ 56 * 56, 32, 64})
-// 	->Args({ 56 * 56, 64, 64})
-// 	->Args({ 28 * 28, 64, 128})
-// 	->Args({ 28 * 28, 128, 128})
-// 	->Args({ 14 * 14, 128, 128})
-// 	->Args({ 14 * 14, 128, 256})
-// 	->Args({ 14 * 14, 256, 256})
-// 	->Args({ 7 * 7, 256, 512})
-// 	->Args({ 7 * 7, 512, 512})
-// 	->Args({ 7 * 7, 512, 30})
-// 	->UseRealTime();
-//
-// void bm_tn_eigen_prod(benchmark::State &state){
-// 	Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> mat_lhs(state.range(0), state.range(1));
-// 	Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic> mat_rhs(state.range(1), state.range(2));
-// 	Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic> mat_output(state.range(0), state.range(2));
-// 	mat_lhs.setRandom();
-// 	mat_rhs.setRandom();
-//
-// 	while (state.KeepRunning()){
-// 		mat_output.noalias() = mat_lhs * mat_rhs;
-// 	#ifdef __linux__
-// 		benchmark::ClobberMemory();
-// 	#endif
-// 	}
-//
-// 	state.SetItemsProcessed(state.iterations() * mat_lhs.rows() * mat_lhs.cols() * mat_rhs.cols());
-// }
-// BENCHMARK(bm_tn_eigen_prod)
-// 	->Args({ 32, 32, 32 })
-// 	->Args({ 128, 128, 128 })
-// 	->Args({ 512, 512, 512 })
-// 	->Args({ 1024, 1024, 1024 })
-// 	///mobilenet_0.5
-// 	//general conv
-// 	->Args({ 112 * 112, 9, 3})
-// 	//depthwise conv
-// 	->Args({ 112 * 112, 9 ,1})
-// 	->Args({ 56 * 56, 9, 1})
-// 	->Args({ 28 * 28, 9, 1})
-// 	->Args({ 14 * 14, 9, 1})
-// 	->Args({ 7 * 7, 9, 1})
-// 	//pointwise conv
-// 	->Args({ 112 * 112, 16, 32})
-// 	->Args({ 56 * 56, 32, 64})
-// 	->Args({ 56 * 56, 64, 64})
-// 	->Args({ 28 * 28, 64, 128})
-// 	->Args({ 28 * 28, 128, 128})
-// 	->Args({ 14 * 14, 128, 128})
-// 	->Args({ 14 * 14, 128, 256})
-// 	->Args({ 14 * 14, 256, 256})
-// 	->Args({ 7 * 7, 256, 512})
-// 	->Args({ 7 * 7, 512, 512})
-// 	->Args({ 7 * 7, 512, 30})
-// 	->UseRealTime();
+ void bm_nn_eigen_prod(benchmark::State &state){
+ 	Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic> mat_lhs(state.range(0), state.range(1));
+ 	Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic> mat_rhs(state.range(1), state.range(2));
+ 	Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic> mat_output(state.range(0), state.range(2));
+ 	mat_lhs.setRandom();
+ 	mat_rhs.setRandom();
+
+	EIGEN_VECTORIZE_SSE2
+
+ 	while (state.KeepRunning()){
+ 		mat_output.noalias() = mat_lhs * mat_rhs;
+ 	#ifdef __linux__
+ 		benchmark::ClobberMemory();
+ 	#endif
+ 	}
+
+ 	state.SetItemsProcessed(state.iterations() * mat_lhs.rows() * mat_lhs.cols() * mat_rhs.cols());
+ }
+ BENCHMARK(bm_nn_eigen_prod)
+ 	->Args({ 32, 32, 32 })
+ 	->Args({ 128, 128, 128 })
+ 	->Args({ 512, 512, 512 })
+ 	->Args({ 1024, 1024, 1024 })
+ 	//mobilenet_0.5
+ 	//general conv
+ 	->Args({ 112 * 112, 9, 3})
+ 	//depthwise conv
+ 	->Args({ 112 * 112, 9 ,1})
+ 	->Args({ 56 * 56, 9, 1})
+ 	->Args({ 28 * 28, 9, 1})
+ 	->Args({ 14 * 14, 9, 1})
+ 	->Args({ 7 * 7, 9, 1})
+ 	//pointwise conv
+ 	->Args({ 112 * 112, 16, 32})
+ 	->Args({ 56 * 56, 32, 64})
+ 	->Args({ 56 * 56, 64, 64})
+ 	->Args({ 28 * 28, 64, 128})
+ 	->Args({ 28 * 28, 128, 128})
+ 	->Args({ 14 * 14, 128, 128})
+ 	->Args({ 14 * 14, 128, 256})
+ 	->Args({ 14 * 14, 256, 256})
+ 	->Args({ 7 * 7, 256, 512})
+ 	->Args({ 7 * 7, 512, 512})
+ 	->Args({ 7 * 7, 512, 30})
+	 ->Args({ 1024, 8, 1 })
+	 ->Args({ 1024, 4, 1 })
+ 	->UseRealTime();
+
+ void bm_tn_eigen_prod(benchmark::State &state){
+ 	Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> mat_lhs(state.range(0), state.range(1));
+ 	Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic> mat_rhs(state.range(1), state.range(2));
+ 	Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic> mat_output(state.range(0), state.range(2));
+ 	mat_lhs.setRandom();
+ 	mat_rhs.setRandom();
+
+ 	while (state.KeepRunning()){
+ 		mat_output.noalias() = mat_lhs * mat_rhs;
+ 	#ifdef __linux__
+ 		benchmark::ClobberMemory();
+ 	#endif
+ 	}
+
+ 	state.SetItemsProcessed(state.iterations() * mat_lhs.rows() * mat_lhs.cols() * mat_rhs.cols());
+ }
+ BENCHMARK(bm_tn_eigen_prod)
+ 	->Args({ 32, 32, 32 })
+ 	->Args({ 128, 128, 128 })
+ 	->Args({ 512, 512, 512 })
+ 	->Args({ 1024, 1024, 1024 })
+ 	///mobilenet_0.5
+ 	//general conv
+ 	->Args({ 112 * 112, 9, 3})
+ 	//depthwise conv
+ 	->Args({ 112 * 112, 9 ,1})
+ 	->Args({ 56 * 56, 9, 1})
+ 	->Args({ 28 * 28, 9, 1})
+ 	->Args({ 14 * 14, 9, 1})
+ 	->Args({ 7 * 7, 9, 1})
+ 	//pointwise conv
+ 	->Args({ 112 * 112, 16, 32})
+ 	->Args({ 56 * 56, 32, 64})
+ 	->Args({ 56 * 56, 64, 64})
+ 	->Args({ 28 * 28, 64, 128})
+ 	->Args({ 28 * 28, 128, 128})
+ 	->Args({ 14 * 14, 128, 128})
+ 	->Args({ 14 * 14, 128, 256})
+ 	->Args({ 14 * 14, 256, 256})
+ 	->Args({ 7 * 7, 256, 512})
+ 	->Args({ 7 * 7, 512, 512})
+ 	->Args({ 7 * 7, 512, 30})
+ 	->UseRealTime();
 
 #ifdef MATAZURE_SSE
 
@@ -952,5 +959,64 @@ BENCHMARK(bm_t4n_mnk_prod_asm)
 	// ->Args({ 7 * 7, 512, 512})
 	->Args({ 8 * 8, 512, 32})
 	->UseRealTime();
+
+#endif
+
+#define MATAZURE_SIMD
+#ifdef MATAZURE_SIMD
+
+void bm_matrixf4x4_prod_vectorf40(benchmark::State &state) {
+	auto n = state.range(0);
+	point<simd_vector<float, 4>, 4> lhs;
+	tensor<simd_vector<float, 4>, 1> ts_rhs(state.range(0));
+	tensor<simd_vector<float, 4>, 1> ts_re(state.range(0));
+
+
+	while (state.KeepRunning()) {
+		for (int i = 0; i < ts_rhs.size(); ++i){
+			ts_re[i] = puzzle::prod0(lhs, ts_rhs[i]);
+		}
+		benchmark::ClobberMemory();
+	}
+
+	state.SetItemsProcessed(state.iterations() * (16)* n);
+}
+BENCHMARK(bm_matrixf4x4_prod_vectorf40)
+->Args({ 4 })
+->Args({ 128 })
+->Args({ 1024 })
+->Args({ 1024 * 16 })
+->Args({ 1024 * 64 })
+->Args({ 1024 * 512 })
+->Args({ 1024 * 1024 })
+->Args({ 1024 * 1024 * 4})
+->UseRealTime();
+
+void bm_matrixf4x4_prod_vectorf41(benchmark::State &state) {
+	auto n = state.range(0);
+	point<simd_vector<float, 4>, 4> lhs;
+	tensor<simd_vector<float, 4>, 1> ts_rhs(state.range(0));
+	tensor<simd_vector<float, 4>, 1> ts_re(state.range(0));
+
+
+	while (state.KeepRunning()) {
+		for (int i = 0; i < ts_rhs.size(); ++i) {
+			ts_re[i] = puzzle::prod1(lhs, ts_rhs[i]);
+		}
+		benchmark::ClobberMemory();
+	}
+
+	state.SetItemsProcessed(state.iterations() * (16)* n);
+}
+BENCHMARK(bm_matrixf4x4_prod_vectorf41)
+->Args({ 4 })
+->Args({ 128 })
+->Args({ 1024 })
+->Args({ 1024 * 16 })
+->Args({ 1024 * 64 })
+->Args({ 1024 * 512 })
+->Args({ 1024 * 1024 })
+->Args({ 1024 * 1024 * 4 })
+->UseRealTime();
 
 #endif

@@ -4,6 +4,7 @@
 #include <matazure/meta.hpp>
 
 #include <emmintrin.h>
+#include <pmmintrin.h>
 
 namespace matazure { inline namespace simd {
 
@@ -43,15 +44,15 @@ namespace matazure { inline namespace simd {
 	#endif
 
 		/// return the length of point
-		MATAZURE_GENERAL constexpr int_t size() const {
+		inline constexpr int_t size() const {
 			return rank;
 		}
 
-		MATAZURE_GENERAL  const value_type * data() const {
+		inline const value_type * data() const {
 			return reinterpret_cast<const value_type *>(&elements_);
 		}
 
-		MATAZURE_GENERAL  value_type * data() {
+		inline value_type * data() {
 			return reinterpret_cast<value_type *>(&elements_);
 		}
 
@@ -84,12 +85,12 @@ namespace matazure { inline namespace simd {
 	MATAZURE_NEON_FLOAT_BINARY_OPERATOR(cmpneq, !=)
 
 	template <typename _T, int_t _Rank>
-	inline MATAZURE_GENERAL sse_vector<_T, _Rank> operator+(const sse_vector<_T, _Rank> &p) {
+	inline sse_vector<_T, _Rank> operator+(const sse_vector<_T, _Rank> &p) {
 		return p;
 	}
 
 	template <typename _T, int_t _Rank>
-	inline MATAZURE_GENERAL sse_vector<_T, _Rank> operator-(const sse_vector<_T, _Rank> &p) {
+	inline sse_vector<_T, _Rank> operator-(const sse_vector<_T, _Rank> &p) {
 		sse_vector<_T, _Rank> temp;
 		for (int_t i = 0; i < _Rank; ++i) {
 			temp[i] = -p[i];
@@ -99,7 +100,7 @@ namespace matazure { inline namespace simd {
 	}
 
 	template <typename _T, int_t _Rank>
-	inline MATAZURE_GENERAL sse_vector<_T, _Rank>& operator++(sse_vector<_T, _Rank> &p) {
+	inline sse_vector<_T, _Rank>& operator++(sse_vector<_T, _Rank> &p) {
 		for (int_t i = 0; i < _Rank; ++i) {
 			++p[i];
 		}
@@ -108,7 +109,7 @@ namespace matazure { inline namespace simd {
 	}
 
 	template <typename _T, int_t _Rank>
-	inline MATAZURE_GENERAL sse_vector<_T, _Rank>& operator--(sse_vector<_T, _Rank> &p) {
+	inline sse_vector<_T, _Rank>& operator--(sse_vector<_T, _Rank> &p) {
 		for (int_t i = 0; i < _Rank; ++i) {
 			--p[i];
 		}
@@ -116,6 +117,13 @@ namespace matazure { inline namespace simd {
 		return p;
 	}
 
+	inline sse_vector<float, 4> hadd(sse_vector<float, 4> lhs, sse_vector<float, 4> rhs) {
+		return sse_vector<float, 4>{ _mm_hadd_ps(lhs.elements_, rhs.elements_) };
+	}
+
+	inline void fill(sse_vector<float, 4> & vec, float value) {
+		vec.elements_ =  _mm_set1_ps(value);
+	}
 
 } }
 
