@@ -1,4 +1,4 @@
-execute_process(COMMAND git submodule update --init ${CMAKE_CURRENT_SOURCE_DIR})
+execute_process(COMMAND git submodule update --init . WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 
 set(BENCHMARK_ENABLE_TESTING OFF CACHE BOOL "Build gtest's sample programs." FORCE)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vendor/benchmark)
