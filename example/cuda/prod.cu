@@ -9,11 +9,11 @@ int main() {
 	fill(cmat_rhs, 2.0f);
 
 	//通用乘法操作
-	auto cmat_re = numeric::prod_general(cmat_lhs, cmat_rhs).persist();
+	auto cmat_re = puzzle::prod_general(cmat_lhs, cmat_rhs).persist();
 	cuda::device_synchronize();
 
 	//cuda的分块矩阵乘法
-	auto cmat_re_block = cuda::numeric::prod_block<16>(cmat_lhs, cmat_rhs);
+	auto cmat_re_block = cuda::puzzle::prod_block<16>(cmat_lhs, cmat_rhs);
 	cuda::device_synchronize();
 
 	auto mat_re = mem_clone(cmat_re, host_tag{});

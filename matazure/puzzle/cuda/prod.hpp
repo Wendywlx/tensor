@@ -4,7 +4,7 @@
 
 namespace matazure {
 namespace cuda {
-namespace numeric {
+namespace puzzle {
 
 template <int_t _BlockSize, typename _MatrixLhs, typename _MatrixRhs, typename _MatrixRe>
 inline void prod_block_aligned(_MatrixLhs cmat_lhs, _MatrixRhs cmat_rhs, _MatrixRe &cmat_re) {

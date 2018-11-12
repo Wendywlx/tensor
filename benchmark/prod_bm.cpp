@@ -290,7 +290,7 @@ void bm_tn_prod(benchmark::State &state){
 	fill(ts_rhs, 1.2f);
 
 	while (state.KeepRunning()){
-		auto lts_re = numeric::prod_general(ts_lhs, ts_rhs);
+		auto lts_re = puzzle::prod_general(ts_lhs, ts_rhs);
 		copy(lts_re, ts_output);
 	#ifdef __linux__
 		benchmark::ClobberMemory();

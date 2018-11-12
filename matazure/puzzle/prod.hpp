@@ -2,8 +2,7 @@
 
 #include <matazure/binary_operator.hpp>
 
-namespace matazure {
-namespace numeric{
+namespace matazure { namespace puzzle{
 
 namespace internal{
 
@@ -41,5 +40,4 @@ auto prod_general(_MatrixLhs mat_lhs, _MatrixRhs mat_rhs)->decltype(make_lambda(
 	return make_lambda(pointi<2>{mat_lhs.shape()[0], mat_rhs.shape()[1]}, internal::prod_op<_MatrixLhs, _MatrixRhs>(mat_lhs, mat_rhs), typename _MatrixLhs::memory_type{});
 }
 
-}
-}
+} }

@@ -14,7 +14,7 @@ void bm_cu_prod(benchmark::State& state) {
 
 	cuda::matrix<_ValueType> ts_re(ext);
 	while (state.KeepRunning()) {
-		copy(numeric::prod_general(ts_lhs, ts_rhs), ts_re);
+		copy(puzzle::prod_general(ts_lhs, ts_rhs), ts_re);
 		cuda::device_synchronize();
 	}
 
@@ -34,7 +34,7 @@ void bm_prod(benchmark::State& state) {
 
 	matrix<_ValueType> ts_re(ext);
 	while (state.KeepRunning()) {
-		copy(numeric::prod_general(ts_lhs, ts_rhs), ts_re);
+		copy(puzzle::prod_general(ts_lhs, ts_rhs), ts_re);
 	}
 
 	state.SetBytesProcessed(ts_lhs.size() * sizeof(decltype(ts_lhs[0])) + ts_rhs.size() * sizeof(decltype(ts_rhs[0])) + ts_re.size() * sizeof(decltype(ts_re[0])));
@@ -53,7 +53,7 @@ void bm_cu_prod_block(benchmark::State& state) {
 
 	cuda::matrix<_ValueType> ts_re(ext);
 	while (state.KeepRunning()) {
-		cuda::numeric::prod_block<32>(ts_lhs, ts_rhs, ts_re);
+		cuda::puzzle::prod_block<32>(ts_lhs, ts_rhs, ts_re);
 		cuda::device_synchronize();
 	}
 
