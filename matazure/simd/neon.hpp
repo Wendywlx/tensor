@@ -71,11 +71,15 @@ namespace matazure {
 		return lhs; \
 	}
 
+#ifndef __aarch64__
+
 	inline float32x4_t vdivq_f32(float32x4_t a, float32x4_t b) {
 		float32x4_t recip0 = vrecpeq_f32(b);
 		float32x4_t recip1 = vmulq_f32(recip0, vrecpsq_f32(recip0, b));
 		return vmulq_f32(a, recip1);
 	}
+
+#endif
 
 	inline float32x4_t vcneqq_f32(float32x4_t a, float32x4_t b) {
 		return vmvnq_u32(vceqq_f32(a, b));
@@ -167,6 +171,10 @@ namespace matazure {
 
 #endif
 
+	inline void fill(neon_vector<float, 4> & vec, float value) {
+		vec.elements_ = vdupq_n_f32(value);
+	}
+
 } }
 
 namespace matazure {
@@ -188,6 +196,7 @@ namespace matazure {
 		}
 	};
 #endif
+
 
 }
 

@@ -338,8 +338,6 @@ BENCHMARK(bm_tn_prod)
  	mat_lhs.setRandom();
  	mat_rhs.setRandom();
 
-	EIGEN_VECTORIZE_SSE2
-
  	while (state.KeepRunning()){
  		mat_output.noalias() = mat_lhs * mat_rhs;
  	#ifdef __linux__
@@ -965,6 +963,8 @@ BENCHMARK(bm_t4n_mnk_prod_asm)
 #define MATAZURE_SIMD
 #ifdef MATAZURE_SIMD
 
+#ifndef ANDROID
+
 void bm_matrixf4x4_prod_vectorf40(benchmark::State &state) {
 	auto n = state.range(0);
 	point<simd_vector<float, 4>, 4> lhs;
@@ -991,6 +991,8 @@ BENCHMARK(bm_matrixf4x4_prod_vectorf40)
 ->Args({ 1024 * 1024 })
 ->Args({ 1024 * 1024 * 4})
 ->UseRealTime();
+
+#endif
 
 void bm_matrixf4x4_prod_vectorf41(benchmark::State &state) {
 	auto n = state.range(0);

@@ -11,6 +11,7 @@
 
 #include <matazure/puzzle/prod.hpp>
 #include <matazure/puzzle/conv.hpp>
+#include <matazure/puzzle/transpose.hpp>
 
 #ifdef MATAZURE_CUDA
 #include <matazure/puzzle/cuda/prod.hpp>

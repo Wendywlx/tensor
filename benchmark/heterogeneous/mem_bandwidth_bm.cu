@@ -25,20 +25,20 @@ static void bm_mem_copy(benchmark::State& state) {
 #ifdef USE_CUDA
 
 auto bm_host2host_mem_copy = bm_mem_copy<tensor<byte, 1>, tensor<byte, 1>>;
-BENCHMARK(bm_host2host_mem_copy)->Range(bm_config::min_shape<float, 1>(), bm_config::max_shape<float, 1>())->UseRealTime();
+BENCHMARK(bm_host2host_mem_copy)->Range(bm_config::min_shape<byte, 1>(), bm_config::max_shape<byte, 1>())->UseRealTime();
 
 auto bm_device2host_mem_copy = bm_mem_copy<cuda::tensor<byte, 1>, tensor<byte, 1>>;
-BENCHMARK(bm_device2host_mem_copy)->Range(bm_config::min_shape<float, 1>(), bm_config::max_shape<float, 1>())->UseRealTime();
+BENCHMARK(bm_device2host_mem_copy)->Range(bm_config::min_shape<byte, 1>(), bm_config::max_shape<byte, 1>())->UseRealTime();
 auto bm_host2device_mem_copy = bm_mem_copy<tensor<byte, 1>, cuda::tensor<byte, 1>>;
-BENCHMARK(bm_host2device_mem_copy)->Range(bm_config::min_shape<float, 1>(), bm_config::max_shape<float, 1>())->UseRealTime();
+BENCHMARK(bm_host2device_mem_copy)->Range(bm_config::min_shape<byte, 1>(), bm_config::max_shape<byte, 1>())->UseRealTime();
 auto bm_device2device_mem_copy = bm_mem_copy<cuda::tensor<byte, 1>, cuda::tensor<byte, 1>>;
-BENCHMARK(bm_device2device_mem_copy)->Range(bm_config::min_shape<float, 1>(), bm_config::max_shape<float, 1>())->UseRealTime();
+BENCHMARK(bm_device2device_mem_copy)->Range(bm_config::min_shape<byte, 1>(), bm_config::max_shape<byte, 1>())->UseRealTime();
 
 #endif
 
 #ifdef USE_HOST
 
 auto bm_host2host_mem_copy = bm_mem_copy<tensor<byte, 1>, tensor<byte, 1>>;
-BENCHMARK(bm_host2host_mem_copy)->Range(bm_config::min_shape<float, 1>(), bm_config::max_shape<float, 1>())->UseRealTime();
+BENCHMARK(bm_host2host_mem_copy)->Range(bm_config::min_shape<byte, 1>(), bm_config::max_shape<byte, 1>())->UseRealTime();
 
 #endif
