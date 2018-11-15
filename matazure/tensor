@@ -20,4 +20,6 @@
 
 #include <matazure/simd.hpp>
 
-#include <matazure/external/serialize.hpp>
+#if __has_include ("cereal/cereal.hpp")
+#include <matazure/external/cereal_serialize.hpp>
+#endif

@@ -4,14 +4,15 @@
 
 namespace matazure {
 
-	enum data_type {
-		dt_uint8 = 0,
-		dt_int8,
+	enum struct data_type {
+		undefined = 0,
+		dt_uint8,
 		dt_uint16,
-		dt_int16,
 		dt_uint32,
-		dt_int32,
 		dt_uint64,
+		dt_int8,
+		dt_int16,
+		dt_int32,
 		dt_int64,
 		dt_float16,
 		dt_float32,
@@ -20,42 +21,34 @@ namespace matazure {
 
 	template <typename  _T>
 	struct get_data_type_traits;
-	template <>	struct get_data_type_traits<std::uint8_t> { const static data_type value = dt_uint8; };
-	template <> struct get_data_type_traits<std::int8_t> { const static data_type value = dt_int8; };
-	template <> struct get_data_type_traits<std::uint16_t> { const static data_type value = dt_uint16; };
-	template <> struct get_data_type_traits<std::int16_t> { const static data_type value = dt_int16; };
-	template <> struct get_data_type_traits<std::uint32_t> { const static data_type value = dt_uint32; };
-	template <> struct get_data_type_traits<std::int32_t> { const static data_type value = dt_int32; };
-	template <> struct get_data_type_traits<std::uint64_t> { const static data_type value = dt_uint64; };
-	template <> struct get_data_type_traits<std::int64_t> { const static data_type value = dt_int64; };
-	//template <> struct get_data_type_traits<std::float> { const static data_type value = dt_float16; };
-	template <> struct get_data_type_traits<float> { const static data_type value = dt_float32; };
-	template <> struct get_data_type_traits<double> { const static data_type value = dt_float64; };
+	template <>	struct get_data_type_traits<std::uint8_t>	{ const static data_type value = data_type::dt_uint8; };
+	template <> struct get_data_type_traits<std::uint16_t>	{ const static data_type value = data_type::dt_uint16; };
+	template <> struct get_data_type_traits<std::uint32_t>	{ const static data_type value = data_type::dt_uint32; };
+	template <> struct get_data_type_traits<std::uint64_t>	{ const static data_type value = data_type::dt_uint64; };
+	template <> struct get_data_type_traits<std::int8_t>	{ const static data_type value = data_type::dt_int8; };
+	template <> struct get_data_type_traits<std::int16_t>	{ const static data_type value = data_type::dt_int16; };
+	template <> struct get_data_type_traits<std::int32_t>	{ const static data_type value = data_type::dt_int32; };
+	template <> struct get_data_type_traits<std::int64_t>	{ const static data_type value = data_type::dt_int64; };
+
+	//template <> struct get_data_type_traits<std::float> { const static data_type value = data_type::dt_float16; };
+	template <> struct get_data_type_traits<float>	{ const static data_type value = data_type::dt_float32; };
+	template <> struct get_data_type_traits<double>	{ const static data_type value = data_type::dt_float64; };
 
 	inline int_t get_data_type_size(data_type type) {
 		switch (type) {
-			case dt_uint8:
-				return 1;
-			case dt_int8:
-				return 1;
-			case dt_uint16:
-				return 2;
-			case dt_int16:
-				return 2;
-			case dt_uint32:
-				return 4;
-			case dt_int32:
-				return 4;
-			case dt_float16:
-				return 2;
-			case dt_float32:
-				return 4;
-			case dt_float64:
-				return 8;
-			default:
-				MATAZURE_ASSERT(false, "unreachable");
-				return 0;
+		case data_type::dt_uint8: return 1;
+			case data_type::dt_int8:	return 1;
+			case data_type::dt_uint16:	return 2;
+			case data_type::dt_int16:	return 2;
+			case data_type::dt_uint32:	return 4;
+			case data_type::dt_int32:	return 4;
+			case data_type::dt_float16:	return 2;
+			case data_type::dt_float32:	return 4;
+			case data_type::dt_float64:	return 8;
+			default: MATAZURE_ASSERT(false, "unreachable");
 		}
+
+		return 0;
 	}
 
 	class dynamic_tensor {
