@@ -56,6 +56,8 @@ namespace matazure {
 
 		using shape_type = tensor<int_t, 1>;
 
+		dynamic_tensor() {}
+
 		dynamic_tensor(data_type type, shape_type ts_shape) :
 			type_(type),
 			ts_shape_(ts_shape),
@@ -71,6 +73,21 @@ namespace matazure {
 			size_(reduce(ts_shape_, 1, [](auto x0, auto x1){ return x0 * x1; })),
 			sp_mem_(std::static_pointer_cast<byte>(sp_mem))
 		{ }
+
+		dynamic_tensor(const dynamic_tensor &other) :
+			type_(other.type_),
+			ts_shape_(other.ts_shape_),
+			size_(other.size_),
+			sp_mem_(other.sp_mem_)
+		{}
+
+		dynamic_tensor & operator=(const dynamic_tensor &other) {
+			type_ = other.type_;
+			ts_shape_ = other.ts_shape_;
+			size_ = other.size_;
+			sp_mem_ = other.sp_mem_;
+			return *this;
+		}
 
 		data_type type() const {
 			return type_;
@@ -116,7 +133,7 @@ namespace matazure {
 
 	private:
 		data_type type_;
-		shared_ptr<byte> sp_mem_;
+		shared_ptr<byte> sp_mem_ = nullptr;
 		shape_type ts_shape_;
 		int_t size_;
 	};
