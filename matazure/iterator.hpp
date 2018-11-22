@@ -84,26 +84,26 @@ namespace matazure {
 
 }
 
-namespace std {
+namespace matazure {
 
 	template <typename _Tensor>
-	auto begin(_Tensor ts)->matazure::index_iterator<_Tensor> {
+	auto begin(_Tensor ts) {
 		return matazure::index_iterator<_Tensor>(ts, 0);
 	}
 
 	template <typename _Tensor>
-	auto end( _Tensor ts)->matazure::index_iterator<_Tensor> {
+	auto end( _Tensor ts) {
 		return matazure::index_iterator<_Tensor>(ts, ts.size());
 	}
 
 	template <typename _Tensor>
-	auto rbegin(_Tensor ts)->reverse_iterator<decltype(end(ts))> {
-		return reverse_iterator<decltype(begin(ts))>(end(ts));
+	auto rbegin(_Tensor ts) {
+		return std::reverse_iterator<decltype(begin(ts))>(end(ts));
 	}
 
 	template <typename _Tensor>
-	auto rend(_Tensor ts)->reverse_iterator<decltype(begin(ts))> {
-		return reverse_iterator<decltype(end(ts))>(begin(ts));
+	auto rend(_Tensor ts) {
+		return std::reverse_iterator<decltype(end(ts))>(begin(ts));
 	}
 
 }
